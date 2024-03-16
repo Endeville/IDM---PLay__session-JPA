@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "play_sessions")
@@ -52,8 +53,8 @@ public class PlaySessionEntity extends BaseEntity implements PlaySession {
         return host;
     }
 
-    public PlaySessionEntity setHost(PlayerEntity host) {
-        this.host = host;
+    public PlaySessionEntity setHost(Player host) {
+        this.host = (PlayerEntity) host;
         return this;
     }
 
@@ -66,13 +67,15 @@ public class PlaySessionEntity extends BaseEntity implements PlaySession {
         return null;
     }
 
-    public PlaySessionEntity setGame(BoardGameEntity game) {
-        this.game = game;
+    public PlaySessionEntity setGame(BoardGame game) {
+        this.game = (BoardGameEntity) game;
         return this;
     }
 
-    public PlaySessionEntity setPlayers(Set<PlayerEntity> players) {
-        this.players = players;
+    public PlaySessionEntity setPlayers(Set<Player> players) {
+        this.players =players.stream()
+                .map(p->(PlayerEntity) p)
+                .collect(Collectors.toSet());
         return this;
     }
 
@@ -90,8 +93,8 @@ public class PlaySessionEntity extends BaseEntity implements PlaySession {
         return null;
     }
 
-    public PlaySessionEntity setWinner(PlayerEntity winner) {
-        this.winner = winner;
+    public PlaySessionEntity setWinner(Player winner) {
+        this.winner = (PlayerEntity) winner;
         return this;
     }
 

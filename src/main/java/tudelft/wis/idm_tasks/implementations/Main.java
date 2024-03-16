@@ -11,6 +11,9 @@ public class Main {
              var em=entityMng.createEntityManager();
              em.getTransaction().begin();
              var manager=new BgtDataManagerImpl(em);
+             manager.createNewPlayer("something", "nickname");
+             manager.createNewPlayer("something", "yeag");
+             manager.findPlayersByName("something");
              em.getTransaction().commit();
     }
 }
