@@ -1,19 +1,21 @@
 package tudelft.wis.idm_tasks.entities;
 
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.BoardGame;
+import tudelft.wis.idm_tasks.boardGameTracker.interfaces.PlaySession;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.Player;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "play_sessions")
-public class PlaySessionEntity extends BaseEntity{
+public class PlaySessionEntity extends BaseEntity implements PlaySession {
     private Date date;
     @ManyToOne
     private PlayerEntity host;
@@ -59,22 +61,14 @@ public class PlaySessionEntity extends BaseEntity{
         return game;
     }
 
+    @Override
+    public Collection<Player> getAllPlayers() {
+        return null;
+    }
+
     public PlaySessionEntity setGame(BoardGameEntity game) {
         this.game = game;
         return this;
-    }
-
-    public int getPlayTime() {
-        return playTime;
-    }
-
-    public PlaySessionEntity setPlayTime(int playTime) {
-        this.playTime = playTime;
-        return this;
-    }
-
-    public Set<PlayerEntity> getPlayers() {
-        return players;
     }
 
     public PlaySessionEntity setPlayers(Set<PlayerEntity> players) {
@@ -84,6 +78,16 @@ public class PlaySessionEntity extends BaseEntity{
 
     public PlayerEntity getWinner() {
         return winner;
+    }
+
+    @Override
+    public int getPlaytime() {
+        return 0;
+    }
+
+    @Override
+    public String toVerboseString() {
+        return null;
     }
 
     public PlaySessionEntity setWinner(PlayerEntity winner) {

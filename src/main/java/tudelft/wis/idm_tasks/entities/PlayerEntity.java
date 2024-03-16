@@ -58,7 +58,7 @@ public class PlayerEntity extends BaseEntity implements Player {
         return this.nickname;
     }
 
-    public Set<BoardGame> getGameCollection() {
+    public Set<BoardGameEntity> getGameCollection() {
         return gameCollection;
     }
 
