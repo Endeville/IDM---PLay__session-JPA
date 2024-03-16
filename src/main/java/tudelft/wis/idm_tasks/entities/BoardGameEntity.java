@@ -4,6 +4,7 @@ import tudelft.wis.idm_tasks.boardGameTracker.interfaces.BoardGame;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity

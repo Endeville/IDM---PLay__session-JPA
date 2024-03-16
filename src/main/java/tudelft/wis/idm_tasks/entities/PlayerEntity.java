@@ -1,6 +1,7 @@
 package tudelft.wis.idm_tasks.entities;
 
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.BoardGame;
+import tudelft.wis.idm_tasks.boardGameTracker.interfaces.Player;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -12,7 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "players")
-public class PlayerEntity extends BaseEntity{
+public class PlayerEntity extends BaseEntity implements Player {
 
     private String name;
     private String nickname;
@@ -47,8 +48,27 @@ public class PlayerEntity extends BaseEntity{
         return this;
     }
 
-    public Set<BoardGameEntity> getGameCollection() {
+    @Override
+    public String getPlayerName() {
+        return this.name;
+    }
+
+    @Override
+    public String getPlayerNickName() {
+        return this.nickname;
+    }
+
+    public Set<BoardGame> getGameCollection() {
         return gameCollection;
+    }
+
+    @Override
+    public String toVerboseString() {
+        return "PlayerEntity{" +
+                "name='" + name + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", gameCollection=" + gameCollection +
+                '}';
     }
 
     public PlayerEntity setGameCollection(Set<BoardGameEntity> gameCollection) {

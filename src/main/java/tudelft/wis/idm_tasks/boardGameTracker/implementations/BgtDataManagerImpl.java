@@ -12,18 +12,15 @@ import java.util.Collection;
 import java.util.Date;
 
 public class BgtDataManagerImpl implements BgtDataManager {
-
-    private EntityManager em;
-
+    private final EntityManager em;
     public BgtDataManagerImpl(EntityManager em) {
         this.em = em;
     }
 
     @Override
     public Player createNewPlayer(String name, String nickname) throws BgtException {
-        PlayerEntity p =new PlayerEntity();
-        p.setName(name);
-        p.setNickname(nickname);
+        var p=new PlayerEntity().setName(name).setNickname(nickname);
+
         em.persist(p);
         return p;
     }
