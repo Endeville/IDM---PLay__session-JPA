@@ -14,7 +14,9 @@ import tudelft.wis.idm_tasks.boardGameTracker.interfaces.BgtDataManager;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.BoardGame;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.PlaySession;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.Player;
+import tudelft.wis.idm_tasks.entities.BoardGameEntity;
 import tudelft.wis.idm_tasks.entities.PlaySessionEntity;
+import tudelft.wis.idm_tasks.entities.PlayerEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -38,7 +40,7 @@ public class POJO_Test extends tudelft.wis.idm_solutions.BoardGameTracker.Abstra
     public POJO_Test() {
     }
 
-    private final BgtDataManager dataManager = new BgtDataManagerImpl(em);
+    private final BgtDataManagerImpl dataManager = new BgtDataManagerImpl(em);
 
     @Override
     public BgtDataManager getBgtDataManager() {
@@ -67,39 +69,39 @@ public class POJO_Test extends tudelft.wis.idm_solutions.BoardGameTracker.Abstra
 
         // Make sure to start this test with an empty DB - trivial for POJO though...
         // Create dummy data
-        Collection<PlaySessionEntity> testSessions = this.createDummyData(12, 6);
+        Collection<PlaySessionEntity> testSessions = this.createDummyData(5, 6);
 
-        for (PlaySession session : testSessions) {
+        for (PlaySessionEntity session : testSessions) {
             Logger.info("Session Created: \n" + session.toVerboseString());
         }
 
         // Get dummy session & related data
-        PlaySession firstsession = testSessions.iterator().next();
-        Player host = firstsession.getHost();
-        BoardGame game = firstsession.getGame();
+        PlaySessionEntity firstsession = testSessions.iterator().next();
+        PlayerEntity host = firstsession.getHost();
+        BoardGameEntity game = firstsession.getGame();
 
         // Retrieve the host from the database and check if it returns correctly
-        Player retrievedPlayer = this.getBgtDataManager().findPlayersByName(host.getPlayerName()).iterator().next();
-        assertEquals(retrievedPlayer.getPlayerNickName(), retrievedPlayer.getPlayerNickName());
+        PlayerEntity retrievedPlayer = this.getBgtDataManager().findPlayersByName(host.getName()).iterator().next();
+        assertEquals(retrievedPlayer.getNickname(), retrievedPlayer.getNickname());
         assertEquals(retrievedPlayer.getGameCollection().size(), host.getGameCollection().size());
-        Logger.info("Player check passed: " + retrievedPlayer.getPlayerName() + "; collectionSize: " + retrievedPlayer.getGameCollection().size());
+        Logger.info("Player check passed: " + retrievedPlayer.getName() + "; collectionSize: " + retrievedPlayer.getGameCollection().size());
 
         // Retrieve the game from the database and check if it returns correctly
-        BoardGame retrievedGame = this.getBgtDataManager().findGamesByName(game.getName()).iterator().next();
-        assertEquals(retrievedGame.getBGG_URL(), game.getBGG_URL());
+        BoardGameEntity retrievedGame = this.getBgtDataManager().findGamesByName(game.getName()).iterator().next();
+        assertEquals(retrievedGame.getBggUrl(), game.getBggUrl());
 
         // Retrieve session by date
-        Collection<PlaySession> retrievedSession = this.getBgtDataManager().findSessionByDate(firstsession.getDate());
+        Collection<PlaySessionEntity> retrievedSession = this.getBgtDataManager().findSessionByDate(firstsession.getDate());
         assertEquals(firstsession.getDate(), retrievedSession.iterator().next().getDate());
 
         // Remove a game from the host's collection, add  it again
-        BoardGame firstGame = host.getGameCollection().iterator().next();
+        BoardGameEntity firstGame = host.getGameCollection().iterator().next();
         int numOfGames = host.getGameCollection().size();
         host.getGameCollection().remove(firstGame);
         this.getBgtDataManager().persistPlayer(host);
 
         // Load the host again from DB
-        Player hostFromDB = this.getBgtDataManager().findPlayersByName(host.getPlayerName()).iterator().next();
+        PlayerEntity hostFromDB = this.getBgtDataManager().findPlayersByName(host.getName()).iterator().next();
         assertEquals(numOfGames - 1, hostFromDB.getGameCollection().size());
 
         // Add the game again
@@ -107,9 +109,7 @@ public class POJO_Test extends tudelft.wis.idm_solutions.BoardGameTracker.Abstra
         this.getBgtDataManager().persistPlayer(host);
 
         // Load the host again from DB
-        Player hostFromDB2 = this.getBgtDataManager().findPlayersByName(host.getPlayerName()).iterator().next();
+        PlayerEntity hostFromDB2 = this.getBgtDataManager().findPlayersByName(host.getName()).iterator().next();
         assertEquals(numOfGames, hostFromDB2.getGameCollection().size());
-
     }
-
 }

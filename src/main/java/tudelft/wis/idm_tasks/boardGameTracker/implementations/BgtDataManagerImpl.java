@@ -21,14 +21,14 @@ public class BgtDataManagerImpl implements BgtDataManager {
     }
 
     @Override
-    public Player createNewPlayer(String name, String nickname) {
+    public PlayerEntity createNewPlayer(String name, String nickname) {
         var p=new PlayerEntity().setName(name).setNickname(nickname).setGameCollection(new HashSet<>());
         em.persist(p);
         return p;
     }
 
     @Override
-    public Collection<Player> findPlayersByName(String name) {
+    public Collection<PlayerEntity> findPlayersByName(String name) {
         var result=em.createQuery("""
                         select p from PlayerEntity p
                         where p.name=:name
@@ -38,15 +38,14 @@ public class BgtDataManagerImpl implements BgtDataManager {
         return result;
     }
 
-    public BoardGame createNewBoardgame(String name, String bggURL) throws BgtException {
+    public BoardGameEntity createNewBoardgame(String name, String bggURL) {
         BoardGameEntity bge = new BoardGameEntity(name, bggURL);
         em.persist(bge);
         return bge;
     }
 
     @Override
-    public Collection<BoardGame> findGamesByName(String name) throws BgtException {
-        try {
+    public Collection<BoardGameEntity> findGamesByName(String name) {
             var bc = em.createQuery("""
                         select bge from BoardGameEntity bge
                         where bge.name=:name
@@ -54,25 +53,22 @@ public class BgtDataManagerImpl implements BgtDataManager {
                 .setParameter("name", name)
                 .getResultList();
             return bc;
-        }catch (Exception e){
-            throw new BgtException();
-        }
     }
 
     @Override
-    public PlaySession createNewPlaySession(Date date, Player host, BoardGame game, int playtime, Collection<Player> players, Player winner) {
+    public PlaySessionEntity createNewPlaySession(Date date, PlayerEntity host, BoardGameEntity game, int playtime, Collection<PlayerEntity> players, PlayerEntity winner) {
         var p=new PlaySessionEntity()
                 .setGame(game)
                         .setDate(date)
                                 .setHost(host)
-                                        .setPlayers(new HashSet<>(players))
+                                        .setPlayers((Set<PlayerEntity>) players)
                                                 .setWinner(winner);
 
         em.persist(p);
         return p;
     }
     @Override
-    public Collection<PlaySession> findSessionByDate(Date date) throws BgtException {
+    public Collection<PlaySessionEntity> findSessionByDate(Date date) throws BgtException {
         try {
             var bc = em.createQuery("""
                         select ps from PlaySessionEntity ps
@@ -87,29 +83,33 @@ public class BgtDataManagerImpl implements BgtDataManager {
     }
 
     @Override
-    public void persistPlayer(Player player) {
+    public void persistPlayer(PlayerEntity player) {
         var p=new PlayerEntity()
-                .setName(player.getPlayerName())
-                        .setNickname(player.getPlayerNickName());
+                .setName(player.getName())
+                        .setNickname(player.getNickname())
+                .setGameCollection(player.getGameCollection()
+                        .stream()
+                        .map(b->(BoardGameEntity)b)
+                        .collect(Collectors.toSet()));
         em.persist(p);
     }
 
     @Override
-    public void persistPlaySession(PlaySession session) {
+    public void persistPlaySession(PlaySessionEntity session) {
         var p=new PlaySessionEntity()
                 .setGame(session.getGame())
                 .setHost(session.getHost())
                 .setDate(session.getDate())
                 .setWinner(session.getWinner())
-                .setPlayers((Set<Player>) session.getAllPlayers());
+                .setPlayers(session.getPlayers());
         em.persist(p);
     }
 
     @Override
-    public void persistBoardGame(BoardGame game) {
+    public void persistBoardGame(BoardGameEntity game) {
         var b=new BoardGameEntity()
                 .setName(game.getName())
-                .setBggUrl(game.getBGG_URL());
+                .setBggUrl(game.getBggUrl());
         em.persist(b);
     }
 }

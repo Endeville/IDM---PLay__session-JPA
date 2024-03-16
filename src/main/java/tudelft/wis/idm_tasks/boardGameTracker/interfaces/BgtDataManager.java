@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Date;
 import tudelft.wis.idm_tasks.boardGameTracker.BgtException;
+import tudelft.wis.idm_tasks.entities.BoardGameEntity;
+import tudelft.wis.idm_tasks.entities.PlaySessionEntity;
 import tudelft.wis.idm_tasks.entities.PlayerEntity;
 
 // Add other necessary imports here
@@ -25,9 +27,8 @@ public interface BgtDataManager {
      * @param name the player name
      * @param nickname the player nickname
      * @return the new player
-     * @throws java.sql.SQLException DB trouble
      */
-    public Player createNewPlayer(String name, String nickname) throws BgtException;
+    public PlayerEntity createNewPlayer(String name, String nickname);
         // @TODO: Implement this method.
 
     /**
@@ -35,9 +36,8 @@ public interface BgtDataManager {
      *
      * @param name the name substring to use, e.g., searching for "hris" will find "Christoph"
      * @return collection of all players containing the param substring in their names
-     * @throws BgtException the bgt exception
      */
-    public Collection<Player> findPlayersByName(String name) throws BgtException;
+    public Collection<PlayerEntity> findPlayersByName(String name);
         // @TODO: Implement this method.
 
     /**
@@ -50,9 +50,8 @@ public interface BgtDataManager {
      * @param name the name of the game
      * @param bggURL the URL of the game at BoardGameGeek.com
      * @return the new game
-     * @throws SQLException DB trouble
      */
-    public BoardGame createNewBoardgame(String name, String bggURL) throws BgtException;
+    public BoardGameEntity createNewBoardgame(String name, String bggURL);
         // @TODO: Implement this method.
 
     /**
@@ -62,7 +61,7 @@ public interface BgtDataManager {
      * find "Eclipse: Second Dawn of the Galaxy""
      * @return collection of all boardgames containing the param substring in their names
      */
-    public Collection<BoardGame> findGamesByName(String name) throws BgtException;
+    public Collection<BoardGameEntity> findGamesByName(String name);
         // @TODO: Implement this method.
 
     /**
@@ -77,7 +76,7 @@ public interface BgtDataManager {
      * winners not supported)
      * @return the new play session
      */
-    public PlaySession createNewPlaySession(Date date, Player host, BoardGame game, int playtime, Collection<Player> players, Player winner) throws BgtException;
+    public PlaySessionEntity createNewPlaySession(Date date, PlayerEntity host, BoardGameEntity game, int playtime, Collection<PlayerEntity> players, PlayerEntity winner) throws BgtException;
         // @TODO: Implement this method.
 
     /**
@@ -87,28 +86,28 @@ public interface BgtDataManager {
      * @return collection of all play sessions from the param date
      * @throws BgtException the bgt exception
      */
-    public Collection<PlaySession> findSessionByDate(Date date) throws BgtException;
+    public Collection<PlaySessionEntity> findSessionByDate(Date date) throws BgtException;
         // @TODO: Implement this method.
 
     /**
      * Persists a given player to the DB. Note that this player might already exist and only needs an update :-)
      * @param player the player
      */
-    public void persistPlayer(Player player);
+    public void persistPlayer(PlayerEntity player);
         // @TODO: Implement this method.
 
     /**
      * Persists a given session to the DB. Note that this session might already exist and only needs an update :-)
      * @param session the session
      */
-    public void persistPlaySession(PlaySession session);
+    public void persistPlaySession(PlaySessionEntity session);
         // @TODO: Implement this method.
 
     /**
      * Persists a given game to the DB. Note that this game might already exist and only needs an update :-)
      * @param game the game
      */
-    public void persistBoardGame(BoardGame game);
+    public void persistBoardGame(BoardGameEntity game);
         // @TODO: Implement this method.
 
 }

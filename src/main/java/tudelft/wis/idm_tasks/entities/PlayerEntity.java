@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "players")
-public class PlayerEntity extends BaseEntity implements Player {
+public class PlayerEntity extends BaseEntity {
 
     private String name;
     private String nickname;
@@ -41,30 +41,16 @@ public class PlayerEntity extends BaseEntity implements Player {
         return this;
     }
 
-    @Override
-    public String getPlayerName() {
-        return this.name;
+    public String getName() {
+        return name;
     }
 
-    @Override
-    public String getPlayerNickName() {
-        return this.nickname;
+    public String getNickname() {
+        return nickname;
     }
 
-    @Override
-    public Set<BoardGame> getGameCollection() {
-       return this.gameCollection.stream()
-               .map(b-> (BoardGame)b)
-               .collect(Collectors.toSet());
-    }
-
-    @Override
-    public String toVerboseString() {
-        return "PlayerEntity{" +
-                "name='" + name + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", gameCollection=" + gameCollection +
-                '}';
+    public Set<BoardGameEntity> getGameCollection() {
+        return gameCollection;
     }
 
     public PlayerEntity setGameCollection(Set<BoardGameEntity> gameCollection) {

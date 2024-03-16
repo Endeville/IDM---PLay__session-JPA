@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "board_games")
-public class BoardGameEntity extends BaseEntity implements BoardGame {
+public class BoardGameEntity extends BaseEntity {
     @Column
     private String name;
     @Column
@@ -27,16 +27,6 @@ public class BoardGameEntity extends BaseEntity implements BoardGame {
         return name;
     }
 
-    @Override
-    public String getBGG_URL() {
-        return null;
-    }
-
-    @Override
-    public String toVerboseString() {
-        return null;
-    }
-
     public BoardGameEntity setName(String name) {
         this.name = name;
         return this;
@@ -45,6 +35,10 @@ public class BoardGameEntity extends BaseEntity implements BoardGame {
     public BoardGameEntity setBggUrl(String bggUrl) {
         this.bggUrl = bggUrl;
         return this;
+    }
+
+    public String getBggUrl() {
+        return bggUrl;
     }
 
     @Override

@@ -6,7 +6,9 @@ import tudelft.wis.idm_tasks.boardGameTracker.interfaces.BgtDataManager;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.BoardGame;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.PlaySession;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.Player;
+import tudelft.wis.idm_tasks.entities.BoardGameEntity;
 import tudelft.wis.idm_tasks.entities.PlaySessionEntity;
+import tudelft.wis.idm_tasks.entities.PlayerEntity;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -70,8 +72,8 @@ public abstract class AbstractBGTDemo {
      */
     public Collection<PlaySessionEntity> createDummyData(int numOfPlayers, int numOfSessions) throws BgtException {
         Collection<PlaySessionEntity> sessions = new LinkedList<>();
-        Collection<Player> players = new LinkedList<Player>();
-        Collection<BoardGame> games = new LinkedList<BoardGame>();
+        Collection<PlayerEntity> players = new LinkedList<>();
+        Collection<BoardGameEntity> games = new LinkedList<>();
         BgtDataManager dbManager = getBgtDataManager();
 
         // Create 5 games
@@ -85,9 +87,9 @@ public abstract class AbstractBGTDemo {
 
         // Create players
         for (int i = 0; i < numOfPlayers; i++) {
-            Player newPlayer = dbManager.createNewPlayer(faker.name().fullName(), faker.pokemon().name());
-            Collection<BoardGame> playerGames = rndSubset(games, RND.nextInt(3));
-            for (BoardGame game : playerGames) {
+            PlayerEntity newPlayer = dbManager.createNewPlayer(faker.name().fullName(), faker.pokemon().name());
+            Collection<BoardGameEntity> playerGames = rndSubset(games, RND.nextInt(3));
+            for (BoardGameEntity game : playerGames) {
                 newPlayer.getGameCollection().add(game);
             }
             // Those games in the gameCollection are added AFTER the player was created. 
@@ -99,9 +101,9 @@ public abstract class AbstractBGTDemo {
 
         // Create 5 play sessions
         for (int i = 0; i < numOfSessions; i++) {
-            Collection<Player> sessionPlayers = rndSubset(players, 2 + RND.nextInt(4));
-            PlaySession newSession = dbManager.createNewPlaySession(faker.date().past(365, TimeUnit.DAYS), rndSubset(sessionPlayers, 1).getFirst(), rndSubset(games, 1).getFirst(), 90 + RND.nextInt(90), sessionPlayers, rndSubset(sessionPlayers, 1).getFirst());
-            sessions.add((PlaySessionEntity) newSession);
+            Collection<PlayerEntity> sessionPlayers = rndSubset(players, 2 + RND.nextInt(4));
+            PlaySessionEntity newSession = dbManager.createNewPlaySession(faker.date().past(365, TimeUnit.DAYS), rndSubset(sessionPlayers, 1).getFirst(), rndSubset(games, 1).getFirst(), 90 + RND.nextInt(90), sessionPlayers, rndSubset(sessionPlayers, 1).getFirst());
+            sessions.add(newSession);
         }
         return sessions;
     }

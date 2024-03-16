@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "play_sessions")
-public class PlaySessionEntity extends BaseEntity implements PlaySession {
+public class PlaySessionEntity extends BaseEntity {
     private Date date;
     @ManyToOne
     private PlayerEntity host;
@@ -53,8 +53,8 @@ public class PlaySessionEntity extends BaseEntity implements PlaySession {
         return host;
     }
 
-    public PlaySessionEntity setHost(Player host) {
-        this.host = (PlayerEntity) host;
+    public PlaySessionEntity setHost(PlayerEntity host) {
+        this.host = host;
         return this;
     }
 
@@ -62,41 +62,36 @@ public class PlaySessionEntity extends BaseEntity implements PlaySession {
         return game;
     }
 
-    @Override
-    public Collection<Player> getAllPlayers() {
-        return null;
-    }
-
-    public PlaySessionEntity setGame(BoardGame game) {
+    public PlaySessionEntity setGame(BoardGameEntity game) {
         this.game = (BoardGameEntity) game;
         return this;
     }
 
-    public PlaySessionEntity setPlayers(Set<Player> players) {
+    public PlaySessionEntity setPlayers(Set<PlayerEntity> players) {
         this.players =players.stream()
                 .map(p->(PlayerEntity) p)
                 .collect(Collectors.toSet());
         return this;
     }
 
+    public int getPlayTime() {
+        return playTime;
+    }
+
+    public Set<PlayerEntity> getPlayers() {
+        return players;
+    }
+
     public PlayerEntity getWinner() {
         return winner;
     }
 
-    @Override
-    public int getPlaytime() {
-        return 0;
-    }
-
-    @Override
-    public String toVerboseString() {
-        return null;
-    }
-
-    public PlaySessionEntity setWinner(Player winner) {
+    public PlaySessionEntity setWinner(PlayerEntity winner) {
         this.winner = (PlayerEntity) winner;
         return this;
     }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -109,5 +104,16 @@ public class PlaySessionEntity extends BaseEntity implements PlaySession {
     @Override
     public int hashCode() {
         return Objects.hash(date, host, game, playTime, players, winner);
+    }
+
+    public String toVerboseString() {
+        return "PlaySessionEntity{" +
+                "date=" + date +
+                ", host=" + host +
+                ", game=" + game +
+                ", playTime=" + playTime +
+                ", players=" + players +
+                ", winner=" + winner +
+                '}';
     }
 }
