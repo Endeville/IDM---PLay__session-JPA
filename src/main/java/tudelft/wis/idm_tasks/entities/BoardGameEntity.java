@@ -4,9 +4,11 @@ import jdk.jfr.Enabled;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
+@Table(name = "board_games")
 public class BoardGameEntity extends BaseEntity {
     @Column
     private String name;
