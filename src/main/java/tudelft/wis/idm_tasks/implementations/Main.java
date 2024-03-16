@@ -10,5 +10,7 @@ public class Main {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
              var entityMng =Persistence.createEntityManagerFactory("idm_jpa");
              var em=entityMng.createEntityManager();
+             em.getTransaction().begin();
+             em.getTransaction().commit();
     }
 }
