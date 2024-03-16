@@ -1,13 +1,13 @@
 package tudelft.wis.idm_tasks.entities;
 
-import jdk.jfr.Enabled;
+import tudelft.wis.idm_tasks.boardGameTracker.interfaces.BoardGame;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.Objects;
 
 @Entity
-public class BoardGameEntity extends BaseEntity {
+public class BoardGameEntity extends BaseEntity implements BoardGame {
     @Column
     private String name;
     @Column
@@ -25,17 +25,18 @@ public class BoardGameEntity extends BaseEntity {
         return name;
     }
 
+    @Override
+    public String getBGG_URL() {
+        return null;
+    }
+
+    @Override
+    public String toVerboseString() {
+        return null;
+    }
+
     public BoardGameEntity setName(String name) {
         this.name = name;
-        return this;
-    }
-
-    public String getBggUrl() {
-        return bggUrl;
-    }
-
-    public BoardGameEntity setBggUrl(String bggUrl) {
-        this.bggUrl = bggUrl;
         return this;
     }
 

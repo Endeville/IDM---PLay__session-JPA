@@ -5,14 +5,27 @@ import tudelft.wis.idm_tasks.boardGameTracker.interfaces.BgtDataManager;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.BoardGame;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.PlaySession;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.Player;
+import tudelft.wis.idm_tasks.entities.PlayerEntity;
 
+import javax.persistence.EntityManager;
 import java.util.Collection;
 import java.util.Date;
 
 public class BgtDataManagerImpl implements BgtDataManager {
+
+    private EntityManager em;
+
+    public BgtDataManagerImpl(EntityManager em) {
+        this.em = em;
+    }
+
     @Override
     public Player createNewPlayer(String name, String nickname) throws BgtException {
-        return null;
+        PlayerEntity p =new PlayerEntity();
+        p.setName(name);
+        p.setNickname(nickname);
+        em.persist(p);
+        return p;
     }
 
     @Override
