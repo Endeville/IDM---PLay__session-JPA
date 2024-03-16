@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "players")
@@ -30,17 +31,9 @@ public class PlayerEntity extends BaseEntity implements Player {
     public PlayerEntity() {
     }
 
-    public String getName() {
-        return name;
-    }
-
     public PlayerEntity setName(String name) {
         this.name = name;
         return this;
-    }
-
-    public String getNickname() {
-        return nickname;
     }
 
     public PlayerEntity setNickname(String nickname) {
@@ -58,8 +51,11 @@ public class PlayerEntity extends BaseEntity implements Player {
         return this.nickname;
     }
 
+    @Override
     public Set<BoardGame> getGameCollection() {
-        return gameCollection;
+       return this.gameCollection.stream()
+               .map(b-> (BoardGame)b)
+               .collect(Collectors.toSet());
     }
 
     @Override
