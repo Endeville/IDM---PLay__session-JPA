@@ -10,6 +10,8 @@ import tudelft.wis.idm_tasks.entities.PlayerEntity;
 import javax.persistence.EntityManager;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class BgtDataManagerImpl implements BgtDataManager {
     private final EntityManager em;
@@ -27,6 +29,15 @@ public class BgtDataManagerImpl implements BgtDataManager {
 
     @Override
     public Collection<Player> findPlayersByName(String name) throws BgtException {
+        var result=em.createQuery("""
+                        select p from PlayerEntity p
+                        where p.name=:name
+                        """)
+                .setParameter("name", name)
+                .getResultList();
+//        return result.stream()
+//                .map(p-> )
+//                .collect(Collectors.toList());
         return null;
     }
 

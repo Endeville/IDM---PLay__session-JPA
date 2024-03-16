@@ -8,6 +8,7 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
+@Table(name = "board_games")
 public class BoardGameEntity extends BaseEntity implements BoardGame {
     @Column
     private String name;
