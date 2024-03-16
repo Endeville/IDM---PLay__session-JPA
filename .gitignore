@@ -3,3 +3,4 @@
 /db/bggt.duckdb
 /db/bggt.duckdb.wal
 /nbproject/
+/src/main/resources/META-INF/persistence.xml
