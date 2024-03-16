@@ -16,20 +16,21 @@ import java.util.stream.Collectors;
 
 public class BgtDataManagerImpl implements BgtDataManager {
     private final EntityManager em;
+
     public BgtDataManagerImpl(EntityManager em) {
         this.em = em;
     }
 
     @Override
     public PlayerEntity createNewPlayer(String name, String nickname) {
-        var p=new PlayerEntity().setName(name).setNickname(nickname).setGameCollection(new HashSet<>());
+        var p = new PlayerEntity().setName(name).setNickname(nickname).setGameCollection(new HashSet<>());
         em.persist(p);
         return p;
     }
 
     @Override
     public Collection<PlayerEntity> findPlayersByName(String name) {
-        var result=em.createQuery("""
+        var result = em.createQuery("""
                         select p from PlayerEntity p
                         where p.name=:name
                         """)
@@ -46,57 +47,54 @@ public class BgtDataManagerImpl implements BgtDataManager {
 
     @Override
     public Collection<BoardGameEntity> findGamesByName(String name) {
-            var bc = em.createQuery("""
+        var bc = em.createQuery("""
                         select bge from BoardGameEntity bge
                         where bge.name=:name
                         """)
                 .setParameter("name", name)
                 .getResultList();
-            return bc;
+        return bc;
     }
 
     @Override
     public PlaySessionEntity createNewPlaySession(Date date, PlayerEntity host, BoardGameEntity game, int playtime, Collection<PlayerEntity> players, PlayerEntity winner) {
-        var p=new PlaySessionEntity()
+        var p = new PlaySessionEntity()
                 .setGame(game)
-                        .setDate(date)
-                                .setHost(host)
-                                        .setPlayers((Set<PlayerEntity>) players)
-                                                .setWinner(winner);
+                .setDate(date)
+                .setHost(host)
+                .setPlayers(new HashSet<>(players))
+                .setWinner(winner);
 
         em.persist(p);
         return p;
     }
+
     @Override
-    public Collection<PlaySessionEntity> findSessionByDate(Date date) throws BgtException {
-        try {
-            var bc = em.createQuery("""
+    public Collection<PlaySessionEntity> findSessionByDate(Date date) {
+        var bc = em.createQuery("""
                         select ps from PlaySessionEntity ps
                         where ps.date=:date
                         """)
                 .setParameter("date", date)
                 .getResultList();
-            return bc;
-        }catch (Exception e){
-            throw new BgtException();
-        }
+        return bc;
     }
 
     @Override
     public void persistPlayer(PlayerEntity player) {
-        var p=new PlayerEntity()
+        var p = new PlayerEntity()
                 .setName(player.getName())
-                        .setNickname(player.getNickname())
+                .setNickname(player.getNickname())
                 .setGameCollection(player.getGameCollection()
                         .stream()
-                        .map(b->(BoardGameEntity)b)
+                        .map(b -> (BoardGameEntity) b)
                         .collect(Collectors.toSet()));
         em.persist(p);
     }
 
     @Override
     public void persistPlaySession(PlaySessionEntity session) {
-        var p=new PlaySessionEntity()
+        var p = new PlaySessionEntity()
                 .setGame(session.getGame())
                 .setHost(session.getHost())
                 .setDate(session.getDate())
@@ -107,7 +105,7 @@ public class BgtDataManagerImpl implements BgtDataManager {
 
     @Override
     public void persistBoardGame(BoardGameEntity game) {
-        var b=new BoardGameEntity()
+        var b = new BoardGameEntity()
                 .setName(game.getName())
                 .setBggUrl(game.getBggUrl());
         em.persist(b);
