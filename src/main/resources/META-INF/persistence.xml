@@ -8,7 +8,7 @@
     <persistence-unit name="idm_jpa">
         <properties>
             <property name="hibernate.connection.url"
-                      value="jdbc:postgresql://localhost:5432/bgt_jpa?createDatabaseIfNotExist=true"/>
+                      value="jdbc:postgresql://localhost:5432/bgt_jpa"/>
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
             <property name="hibernate.connection.username" value="postgres"/>
