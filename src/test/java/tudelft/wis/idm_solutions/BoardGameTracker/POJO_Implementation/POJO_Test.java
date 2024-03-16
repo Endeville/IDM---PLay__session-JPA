@@ -4,6 +4,8 @@
  */
 package tudelft.wis.idm_solutions.BoardGameTracker.POJO_Implementation;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.tinylog.Logger;
 import tudelft.wis.idm_tasks.boardGameTracker.BgtException;
@@ -43,6 +45,17 @@ public class POJO_Test extends tudelft.wis.idm_solutions.BoardGameTracker.Abstra
         return dataManager;
     }
 
+    @BeforeEach
+    public void init() {
+        em.getTransaction().begin();
+    }
+
+    @AfterEach
+    public void close() {
+        em.getTransaction().commit();
+    }
+
+
     /**
      * Just runs the application with some simple queries and assertions. It's
      * not very comprehensive, essentially, just a single session is retrieved
@@ -50,6 +63,7 @@ public class POJO_Test extends tudelft.wis.idm_solutions.BoardGameTracker.Abstra
      */
     @Test
     public void basicTest() throws BgtException {
+
 
         // Make sure to start this test with an empty DB - trivial for POJO though...
         // Create dummy data
