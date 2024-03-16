@@ -5,15 +5,13 @@ import tudelft.wis.idm_tasks.boardGameTracker.interfaces.BgtDataManager;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.BoardGame;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.PlaySession;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.Player;
+import tudelft.wis.idm_tasks.entities.BoardGameEntity;
 import tudelft.wis.idm_tasks.entities.PlaySessionEntity;
 import tudelft.wis.idm_tasks.entities.BoardGameEntity;
 import tudelft.wis.idm_tasks.entities.PlayerEntity;
 
 import javax.persistence.EntityManager;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BgtDataManagerImpl implements BgtDataManager {
@@ -24,7 +22,7 @@ public class BgtDataManagerImpl implements BgtDataManager {
 
     @Override
     public Player createNewPlayer(String name, String nickname) {
-        var p=new PlayerEntity().setName(name).setNickname(nickname);
+        var p=new PlayerEntity().setName(name).setNickname(nickname).setGameCollection(new HashSet<>());
         em.persist(p);
         return p;
     }
@@ -90,16 +88,28 @@ public class BgtDataManagerImpl implements BgtDataManager {
 
     @Override
     public void persistPlayer(Player player) {
-
+        var p=new PlayerEntity()
+                .setName(player.getPlayerName())
+                        .setNickname(player.getPlayerNickName());
+        em.persist(p);
     }
 
     @Override
     public void persistPlaySession(PlaySession session) {
-
+        var p=new PlaySessionEntity()
+                .setGame(session.getGame())
+                .setHost(session.getHost())
+                .setDate(session.getDate())
+                .setWinner(session.getWinner())
+                .setPlayers((Set<Player>) session.getAllPlayers());
+        em.persist(p);
     }
 
     @Override
     public void persistBoardGame(BoardGame game) {
-
+        var b=new BoardGameEntity()
+                .setName(game.getName())
+                .setBggUrl(game.getBGG_URL());
+        em.persist(b);
     }
 }

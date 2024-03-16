@@ -42,6 +42,11 @@ public class BoardGameEntity extends BaseEntity implements BoardGame {
         return this;
     }
 
+    public BoardGameEntity setBggUrl(String bggUrl) {
+        this.bggUrl = bggUrl;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

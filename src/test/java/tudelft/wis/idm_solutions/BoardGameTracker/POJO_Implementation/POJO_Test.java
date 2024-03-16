@@ -7,11 +7,15 @@ package tudelft.wis.idm_solutions.BoardGameTracker.POJO_Implementation;
 import org.junit.jupiter.api.Test;
 import org.tinylog.Logger;
 import tudelft.wis.idm_tasks.boardGameTracker.BgtException;
+import tudelft.wis.idm_tasks.boardGameTracker.implementations.BgtDataManagerImpl;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.BgtDataManager;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.BoardGame;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.PlaySession;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.Player;
+import tudelft.wis.idm_tasks.entities.PlaySessionEntity;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,13 +27,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class POJO_Test extends tudelft.wis.idm_solutions.BoardGameTracker.AbstractBGTDemo {
 
+    private final EntityManager em= Persistence.createEntityManagerFactory("idm_jpa")
+            .createEntityManager();
+
     /**
      * Instantiates a new POJO test.
      */
     public POJO_Test() {
     }
 
-    private BgtDataManager_POJO dataManager = new BgtDataManager_POJO();
+    private final BgtDataManager dataManager = new BgtDataManagerImpl(em);
 
     @Override
     public BgtDataManager getBgtDataManager() {
@@ -46,7 +53,7 @@ public class POJO_Test extends tudelft.wis.idm_solutions.BoardGameTracker.Abstra
 
         // Make sure to start this test with an empty DB - trivial for POJO though...
         // Create dummy data
-        Collection<PlaySession> testSessions = this.createDummyData(12, 6);
+        Collection<PlaySessionEntity> testSessions = this.createDummyData(12, 6);
 
         for (PlaySession session : testSessions) {
             Logger.info("Session Created: \n" + session.toVerboseString());

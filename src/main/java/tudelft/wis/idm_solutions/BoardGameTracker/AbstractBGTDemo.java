@@ -6,6 +6,7 @@ import tudelft.wis.idm_tasks.boardGameTracker.interfaces.BgtDataManager;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.BoardGame;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.PlaySession;
 import tudelft.wis.idm_tasks.boardGameTracker.interfaces.Player;
+import tudelft.wis.idm_tasks.entities.PlaySessionEntity;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -67,8 +68,8 @@ public abstract class AbstractBGTDemo {
      * @return collection of the play sessions
      * @throws BgtException the bgt exception
      */
-    public Collection<PlaySession> createDummyData(int numOfPlayers, int numOfSessions) throws BgtException {
-        Collection<PlaySession> sessions = new LinkedList<PlaySession>();
+    public Collection<PlaySessionEntity> createDummyData(int numOfPlayers, int numOfSessions) throws BgtException {
+        Collection<PlaySessionEntity> sessions = new LinkedList<>();
         Collection<Player> players = new LinkedList<Player>();
         Collection<BoardGame> games = new LinkedList<BoardGame>();
         BgtDataManager dbManager = getBgtDataManager();
@@ -100,7 +101,7 @@ public abstract class AbstractBGTDemo {
         for (int i = 0; i < numOfSessions; i++) {
             Collection<Player> sessionPlayers = rndSubset(players, 2 + RND.nextInt(4));
             PlaySession newSession = dbManager.createNewPlaySession(faker.date().past(365, TimeUnit.DAYS), rndSubset(sessionPlayers, 1).getFirst(), rndSubset(games, 1).getFirst(), 90 + RND.nextInt(90), sessionPlayers, rndSubset(sessionPlayers, 1).getFirst());
-            sessions.add(newSession);
+            sessions.add((PlaySessionEntity) newSession);
         }
         return sessions;
     }
