@@ -88,7 +88,7 @@ public abstract class AbstractBGTDemo {
         // Create players
         for (int i = 0; i < numOfPlayers; i++) {
             PlayerEntity newPlayer = dbManager.createNewPlayer(faker.name().fullName(), faker.pokemon().name());
-            Collection<BoardGameEntity> playerGames = rndSubset(games, RND.nextInt(3));
+            Collection<BoardGameEntity> playerGames = rndSubset(games, RND.nextInt(3)+1);
             for (BoardGameEntity game : playerGames) {
                 newPlayer.getGameCollection().add(game);
             }

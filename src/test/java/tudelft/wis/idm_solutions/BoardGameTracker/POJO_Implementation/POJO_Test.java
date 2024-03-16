@@ -69,7 +69,7 @@ public class POJO_Test extends tudelft.wis.idm_solutions.BoardGameTracker.Abstra
 
         // Make sure to start this test with an empty DB - trivial for POJO though...
         // Create dummy data
-        Collection<PlaySessionEntity> testSessions = this.createDummyData(5, 6);
+        Collection<PlaySessionEntity> testSessions = this.createDummyData(12, 6);
 
         for (PlaySessionEntity session : testSessions) {
             Logger.info("Session Created: \n" + session.toVerboseString());
